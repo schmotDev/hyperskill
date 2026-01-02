@@ -1,174 +1,134 @@
-import dotenv
-import os
-os.environ["USER_AGENT"] = "Mozilla/5.0 (compatible; MovieScraper/1.0)"
-
-from langchain_community.document_loaders import IMSDbLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from bs4 import BeautifulSoup
-from langchain_chroma import Chroma
-from langchain_openai import OpenAIEmbeddings
-import requests
-import re
-from langchain_qdrant import QdrantVectorStore
-from langchain_huggingface.embeddings import HuggingFaceEmbeddings
+from qdrant_client.http.models.models import ScoredPoint
 from qdrant_client import QdrantClient
-from qdrant_client.http.models import Distance, VectorParams
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
+import os
+from dotenv import load_dotenv
+from openai import OpenAI
+import re
+from qdrant_client.http import models
+from fastapi import FastAPI
+from typing import Optional, List, Dict
+from pydantic import BaseModel
 
+COLLECTION_NAME = "arxiv_papers"
 
-dotenv.load_dotenv()
+load_dotenv()
 api_key=os.environ.get("OPENROUTER_API_KEY", None)
+#api_key=os.environ.get("OPENAI_API_KEY", None)
 
-url_all_movies = "https://imsdb.com/all-scripts.html"
-response = requests.get(url_all_movies)
+url_api="https://openrouter.ai/api/v1"
+#url_api = "https://api.openai.com/v1"
 
-soup = BeautifulSoup(response.text, "html.parser")
+openai_client = OpenAI(
+    api_key=api_key,
+    base_url=url_api
+)
 
-movie_names = [a.get_text(strip=True) for a in soup.select("p a")]
-
-for i, title in enumerate(movie_names, start=1):
-    print(f"{i}. {title}")
-print()
-
-user_input = input("> ")
-if user_input in movie_names:
-    title = user_input.replace(" ", "-")
-    url_movie = f"https://imsdb.com/scripts/{title}.html"
-    loader = IMSDbLoader(url_movie)
-    data = loader.load()
-    text = data[0].page_content
-    text = re.sub(r'\s+', ' ', text).strip()
-
-    splitter = RecursiveCharacterTextSplitter(
-        chunk_size=500,
-        chunk_overlap=10,
-        separators=["INT."],
-        keep_separator="start"  # ensures "INT." stays at start of chunk
-    )
-
-    scene_chunks = splitter.split_text(text)
+app = FastAPI()
 
 
+class SearchRequest(BaseModel):
+    """
+    Model representing a search request sent by a client.
+    """
+    query: str
+    top_n: Optional[int] = 5
 
-    print(f"Loaded script for {user_input} from {url_movie}.")
-    print()
 
-    print(f"Found {len(scene_chunks)} scenes in the script for {user_input}.\n")
-    #for i, scene in enumerate(scene_chunks, start=1):
-    #    print(f"Scene {i}: {scene.strip()}")
+class SearchResult(BaseModel):
+    """
+    Model representing an individual search result.
+    """
+    id: str
+    payload: Dict
+    score: float
 
-    collection_name = title
-    embeddings_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")  # 384 dimensions
-    qdrant_client = QdrantClient(
-        url="http://192.168.50.68:6333"  # Qdrant REST API endpoint
-    )
-    if not qdrant_client.collection_exists(collection_name):
-        qdrant_client.create_collection(
-            collection_name=collection_name,
-            vectors_config=VectorParams(size=384, distance=Distance.COSINE)
+
+class SearchResponse(BaseModel):
+    """
+    Model representing the response returned to a client after a search.
+    """
+    results: List[SearchResult]
+
+
+def extract_author_name(query: str) -> Optional[str]:
+    pattern = r"by\s+([A-Za-z\s\-]+)"
+    match = re.search(pattern, query, re.IGNORECASE)
+
+    if match:
+        return match.group(1).strip()
+
+    return None
+
+
+def search_similar_with_optional_author(
+    collection_name: str,
+    query_vector: list[float],
+    author_name: Optional[str] = None,
+    top_k: int = 3
+    ) -> List[ScoredPoint]:
+
+    client = QdrantClient(host="localhost", port=6333, timeout=120)
+
+    if author_name is not None:
+        search_filter = models.Filter(
+            must=[
+                models.FieldCondition(
+                    key="authors",
+                    match=models.MatchText(text=author_name),
+                )
+            ]
         )
 
-    vector_store = QdrantVectorStore.from_texts(
-        texts=scene_chunks,
-        embedding=embeddings_model,
+    results = client.query_points(
         collection_name=collection_name,
-        url="http://192.168.50.68:6333",
-    )
-    print(f'Embedded script for {user_input}.')
+        query=query_vector,
+        limit=top_k,
+        with_payload=True,
+        with_vectors=False,
+        query_filter=search_filter,
+    ).points
+
+    return results
 
 
-    print()
-    user_query = input("> ")
+def embed_query(query: str) -> list[float]:
+    cleaned_query = query.replace("\n", " ")
 
-    llm = ChatOpenAI(
-        model="openai/gpt-4o-mini",
-        api_key=api_key,
-        base_url="https://openrouter.ai/api/v1",
-        temperature=0.2
-    )
-
-    rewrite_prompt = ChatPromptTemplate.from_messages([
-        ("system", """
-    You are a query rewriter for a movie scene retrieval system.
-    
-    The system retrieves scenes based on semantic similarity to scene descriptions.
-    
-    Rewrite the user's query so that it:
-    - ensures that it emphasizes the necessary keywords for scene retrieval
-    - Uses clear, descriptive language
-    - Avoids questions or conversational phrasing
-    - Is optimized for embedding-based retrieval
-    
-    Return ONLY the rewritten query.
-    
-    example:
-    users' query: "Only scenes involving trains"
-    Your rewritten query: "Find scenes featuring trains."
-    """),
-        ("human", "{query}")
-    ])
-
-    query_rewriter = rewrite_prompt | llm | StrOutputParser()
-
-    rewritten_query = query_rewriter.invoke({
-        "query": user_query
-    })
-
-    print(f"Rewritten query to: \"{rewritten_query}\"")
-    print()
-
-    results = vector_store.similarity_search(
-        rewritten_query,
-        k=5
+    response = openai_client.embeddings.create(
+        model="text-embedding-ada-002",
+        input=cleaned_query,
     )
 
-    #for i, doc in enumerate(results, start=1):
-    #    print(f"Scene {i}: {doc.page_content}")
+    return response.data[0].embedding
 
-    context_text = "\n\n---\n\n".join(
-        doc.page_content for doc in results
+
+@app.post("/search", response_model=SearchResponse)
+def search(request: SearchRequest):
+    # 1. Extract author (optional)
+    author_name = extract_author_name(request.query)
+
+    # 2. Embed the query
+    query_embedding = embed_query(request.query)
+
+    # 3. Run vector search with optional author filter
+    results = search_similar_with_optional_author(
+        collection_name=COLLECTION_NAME,
+        query_vector=query_embedding,
+        author_name=author_name,
+        top_k=request.top_n,
     )
 
-    answer_prompt = ChatPromptTemplate.from_messages([
-        ("system", """
-    You are an expert screenwriter and movie script analyst.
+    # 4. Format results
+    formatted_results = []
 
-    You are given:
-    - A user request
-    - Relevant context extracted from movie script scenes
+    for point in results:
+        formatted_results.append(
+            SearchResult(
+                id=point.payload["id"],
+                payload=point.payload,
+                score=point.score,
+            )
+        )
 
-    Your task:
-    - Use ONLY the provided context when appropriate
-    - Expand, adapt, or creatively synthesize scenes if requested
-    - Write in proper screenplay format when applicable
-    - Be vivid, descriptive, and faithful to cinematic conventions
-
-    If the user asks to create or rewrite a scene, respond in screenplay format.
-    """),
-        ("human", """
-    USER REQUEST:
-    {query}
-
-    RELEVANT SCRIPT CONTEXT:
-    {context}
-
-    Write a detailed and insightful response.
-    """)
-    ])
-
-    answer_chain = answer_prompt | llm | StrOutputParser()
-
-    final_answer = answer_chain.invoke({
-        "query": user_query,
-        "context": context_text
-    })
-
-    print("Final Answer:")
-    print(final_answer)
-
-
-else:
-    print(f"Script for '{user_input}' wasn't found in the list of movie scripts.")
-
+    # 5. Return response
+    return SearchResponse(results=formatted_results)
