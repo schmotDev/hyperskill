@@ -11,7 +11,10 @@ It implements a LlamaIndex workflow and it's fully functional
 
 <br>
 
-### To run the script
+### To use the script
+
+* add the agent.py in the top-level of you repo, create a github workflow
+
 * You need to add a `secret` in your github repo to store  
 `OPENROUTER_API_KEY=sk-xxxxx`
 
