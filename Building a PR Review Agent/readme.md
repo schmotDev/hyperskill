@@ -14,4 +14,4 @@ It implements a LlamaIndex workflow and it's fully functional
 
 * You have to create a TOKEN for the agent, with read/write permissions on Issues and PR
 
-* this agent has been tested with the repo [Link text Here](https://github.com/schmotDev/recipe-api) that can be used as tutorial
+* this agent has been tested with the repo [recipe-api](https://github.com/schmotDev/recipe-api) that can be used as tutorial
