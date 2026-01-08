@@ -17,7 +17,7 @@ A multi-agent AI system using FastAPI where each agent plays a role in designing
 The service can be started by typing:
 `uvicorn main:app --reload --port 8000`  
 
-This will make the servcie available at: `http://localhost:8000/`
+    This will make the servcie available at: `http://localhost:8000/`
 
 <br>
 
