@@ -14,6 +14,7 @@ A full personal assistant agent that maintains conversation context, stores task
 ```env
 OPENROUTER_API_KEY=sk-xxxxx
 OPENAI_BASE_URL=https://openrouter.ai/api/v1
+```
 
 * You also need to have a Vector Store running.
 Run the docker command: `docker run -p 6333:6333 -p 6334:6334 -v "$(pwd)/qdrant_storage:/qdrant/storage:z"   qdrant/qdrant`
