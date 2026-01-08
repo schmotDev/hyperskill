@@ -1,6 +1,6 @@
 ## AI Diet and Meal Planner
 
-Short project, to design multi-agent workflows via REST APIs by using FastAPI to structure, validate, and expose agent services. 
+Short project, to design multi-agent workflows via REST APIs by using FastAPI to structure, validate, and expose agent services.  
 It interacts with LLM providers using prompts, implement prompt engineering techniques and orchestrate LLM-based agents.
 
 <br>
