@@ -15,10 +15,11 @@ A multi-agent AI system using FastAPI where each agent plays a role in designing
 
 * First you need to set up the FastApi service.
 The service can be started by typing:
-`uvicorn main:app --reload --port 8000`
+`uvicorn main:app --reload --port 8000`  
 
 This will make the servcie available at: `http://localhost:8000/`
 
+<br>
 
 * You need to add a `.env` file with your OpenRouter API KEY  and the Base URL of OpenRouter
 
