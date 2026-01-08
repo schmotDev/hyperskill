@@ -11,7 +11,7 @@ A full personal assistant agent that maintains conversation context, stores task
 ### To run the script
 * You need to add a `.env` file with your OpenRouter API KEY  and the Base URL of OpenRouter
 
-`OPENROUTER_API_KEY=sk-xxxxx
+```OPENROUTER_API_KEY=sk-xxxxx
 OPENAI_BASE_URL=https://openrouter.ai/api/v1`
 
 * You also need to have a Vector Store running.
