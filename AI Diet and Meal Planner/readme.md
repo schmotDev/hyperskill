@@ -23,10 +23,10 @@ The service can be started by typing:
 
 * You need to add a `.env` file with your OpenRouter API KEY  and the Base URL of OpenRouter
 
-```.env
-OPENROUTER_API_KEY=sk-xxxxx
-OPENAI_BASE_URL=https://openrouter.ai/api/v1
-```
+    ```.env
+    OPENROUTER_API_KEY=sk-xxxxx
+    OPENAI_BASE_URL=https://openrouter.ai/api/v1
+    ```
 
 <br>
 
