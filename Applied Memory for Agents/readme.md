@@ -17,6 +17,7 @@ OPENROUTER_API_KEY=sk-xxxxx
 OPENAI_BASE_URL=https://openrouter.ai/api/v1
 ```
 
+<br>
 ### Example of conversation with the agent
 
 ```
