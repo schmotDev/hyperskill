@@ -1,0 +1,87 @@
+# Python Quiz API
+
+A RESTful API built with FastAPI based on the Python Quiz Chatbot.
+
+## Installation
+
+1. Create a virtual environment:
+   ```powershell
+   python -m venv venv
+   ```
+
+2. Activate the virtual environment:
+   - On Windows:
+     ```powershell
+     .\venv\Scripts\Activate.ps1
+     ```
+   - On macOS/Linux:
+     ```bash
+     source venv/bin/activate
+     ```
+
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## Running the API
+
+### Using the script (Windows)
+Run the provided PowerShell script:
+```powershell
+.\run_app.ps1
+```
+
+### Manual execution
+Run the API directly using the virtual environment's Python:
+```powershell
+.\venv\Scripts\python.exe api.py
+```
+Or, if the virtual environment is activated:
+```bash
+python api.py
+```
+   The API will be available at `http://localhost:8000`.
+
+## Endpoints
+
+### 1. Get All Questions
+- **URL**: `/questions`
+- **Method**: `GET`
+- **Description**: Returns a list of all quiz questions (without answers).
+- **Response**: List of `Question` objects.
+
+### 2. Get Random Question
+- **URL**: `/questions/random`
+- **Method**: `GET`
+- **Description**: Returns a single random quiz question (without answer).
+- **Response**: `Question` object.
+
+### 3. Verify Answer
+- **URL**: `/verify`
+- **Method**: `POST`
+- **Description**: Verifies the answer for a specific question.
+- **Request Body**:
+  ```json
+  {
+    "question_id": 1,
+    "answer": "b"
+  }
+  ```
+- **Response**: `AnswerResponse` object.
+
+## API Documentation
+Once the server is running, you can access the interactive Swagger documentation at:
+`http://localhost:8000/docs`
+
+## Data Models
+
+### Question
+- `id` (int): Unique identifier.
+- `question` (string): The question text.
+- `options` (list of strings): Multiple choice options.
+
+### AnswerResponse
+- `correct` (boolean): Whether the answer was correct.
+- `correct_answer` (string, optional): The correct letter if the answer was wrong.
+- `message` (string): Feedback message.
