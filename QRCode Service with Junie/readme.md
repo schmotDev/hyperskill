@@ -16,7 +16,7 @@ the AI assistant has created the source code and the gradle environment.
 
 * The project has been developed using Kotlin, so you need Java 1.8 installed to run the project
 
-* you can start the API by typing: ´gradlew run´ in your terminal/CMD
+* you can start the API by typing: `gradlew run` in your terminal/CMD
 
-* Once the API is running you can access at ´http://localhost:12345/health´ to check that everything is working
-  you should see a message saying `service si running`
+* Once the API is running you can access at `http://localhost:12345/health` to check that everything is working
+  you should see a message saying `service is running`
