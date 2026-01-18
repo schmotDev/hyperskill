@@ -25,4 +25,4 @@ the AI assistant has created the source code and the gradle environment.
   `http://localhost:12345/qr?size=300&type=jpeg&contents=HelloWorld`
 
   to create and save a QR code:  
-  `http://localhost:12345/qr/save?contents=filsdep`
+  `http://localhost:12345/qr/save?size=300&type=jpeg&contents=banana`
