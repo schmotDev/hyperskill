@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Camera Filters</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Camera Filters</h1>
+        <div class="video-wrapper">
+            <video id="video" autoplay playsinline></video>
+            <canvas id="canvas" style="display: none;"></canvas>
+        </div>
+        <div class="controls">
+            <button class="filter-btn active" data-filter="none">Normal</button>
+            <button class="filter-btn" data-filter="grayscale(100%)">B&W</button>
+            <button class="filter-btn" data-filter="sepia(100%)">Sepia</button>
+            <button class="filter-btn" data-filter="invert(100%)">Invert</button>
+            <button class="filter-btn" data-filter="hue-rotate(90deg)">Hue 90</button>
+            <button class="filter-btn" data-filter="hue-rotate(180deg)">Hue 180</button>
+            <button class="filter-btn" data-filter="blur(5px)">Blur</button>
+            <button class="filter-btn" data-filter="contrast(200%)">Contrast</button>
+            <button class="filter-btn" data-filter="saturate(300%)">Saturate</button>
+            <button class="filter-btn" data-filter="pixelate">Pixelate</button>
+            <button class="filter-btn" data-filter="halftone">Halftone</button>
+        </div>
+        <div class="pixel-control" id="pixel-control" style="display: none; margin-top: 15px;">
+            <label for="pixel-size">Pixel Size: </label>
+            <input type="range" id="pixel-size" min="2" max="50" value="10">
+        </div>
+        <div id="error-message" class="error"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
