@@ -20,3 +20,9 @@ the AI assistant has created the source code and the gradle environment.
 
 * Once the API is running you can access at `http://localhost:12345/health` to check that everything is working
   you should see a message saying `service is running`
+
+* to create a QR code:
+  `http://localhost:12345/qr?size=300&type=jpeg&contents=HelloWorld`
+
+  to create and save a QR code:
+  `http://localhost:12345/qr/save?contents=filsdep`
