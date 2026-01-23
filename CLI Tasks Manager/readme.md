@@ -104,6 +104,6 @@ Tasks are saved using the following structure:
 ```
 <br>
 Each task contains:  <br>    
-     - task: task description     <br>
-     - status: Pending or Done   
+     - **task**: task description     <br>
+     - **status**: Pending or Done   
 
