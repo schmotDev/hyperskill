@@ -92,7 +92,10 @@ JSON Storage Format
 Tasks are saved using the following structure:
 ```json
 {
-  "Monday": [],
+  "Monday": [{
+            "task": Task name,
+            "status": Task status
+        }],
   "Tuesday": [],
   "Wednesday": [],
   "Thursday": [],
@@ -103,17 +106,3 @@ Tasks are saved using the following structure:
 }
 ```
 <br>
-```json
-{
-  "Monday": [],
-  "Tuesday": [],
-  "Wednesday": [],
-  "Thursday": [],
-  "Friday": [],
-  "Saturday": [],
-  "Sunday": [],
-  "General": []
-}
-```
-<br>
-
