@@ -19,10 +19,12 @@ This project was built as a learning exercise to demonstrate:
 
 ### How to Run the Script
 
-* Prerequisites
-- Python 3.8 or higher
+<br>
 
-* Steps
+**Prerequisites**  
+Python 3.8 or higher  
+<br>
+**Steps**  
 
 1. Clone the repository:
    ```bash
@@ -44,7 +46,7 @@ This project was built as a learning exercise to demonstrate:
    Enter command (add/edit/done/view/save/load/quit):
    ```
    
-* Examples of Usage
+**Examples of Usage**  
 
 Adding a Task
 ```bash
