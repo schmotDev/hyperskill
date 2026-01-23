@@ -103,7 +103,7 @@ Tasks are saved using the following structure:
 }
 ```
 <br>
-Each task contains:      
-     - task: task description     
+Each task contains:  <br>    
+     - task: task description     <br>
      - status: Pending or Done   
 
