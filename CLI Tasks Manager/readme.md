@@ -103,7 +103,11 @@ Tasks are saved using the following structure:
 }
 ```
 <br>
-Each task contains:  <br>    
-     - **task**: task description     <br>
-     - **status**: Pending or Done   
+Each task contains:
+```json
+{"task": task name,
+ "status": task status
+}
+```
+<br>
 
