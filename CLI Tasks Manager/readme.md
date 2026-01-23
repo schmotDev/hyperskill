@@ -110,4 +110,17 @@ Each task contains:
 }
 ```
 <br>
+```json
+{
+  "Monday": [],
+  "Tuesday": [],
+  "Wednesday": [],
+  "Thursday": [],
+  "Friday": [],
+  "Saturday": [],
+  "Sunday": [],
+  "General": []
+}
+```
+<br>
 
