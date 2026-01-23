@@ -86,7 +86,7 @@ Exiting the Program
 Enter command (add/edit/done/view/save/load/quit): quit
 ```
 
-
+<br><br>
 JSON Storage Format
 
 Tasks are saved using the following structure:
@@ -102,8 +102,8 @@ Tasks are saved using the following structure:
   "General": []
 }
 ```
-
-Each task contains:
-   task: task description
-   status: Pending or Done
+<br>
+Each task contains:   
+   task: task description   
+   status: Pending or Done   
 
