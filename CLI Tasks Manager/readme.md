@@ -23,7 +23,7 @@ This project was built as a learning exercise to demonstrate:
 
 **Prerequisites**  
 Python 3.8 or higher  
-<br>
+<br><br>
 **Steps**  
 
 1. Clone the repository:
@@ -45,7 +45,7 @@ Python 3.8 or higher
    ```bash
    Enter command (add/edit/done/view/save/load/quit):
    ```
-   
+<br><br>
 **Examples of Usage**  
 
 Adding a Task
