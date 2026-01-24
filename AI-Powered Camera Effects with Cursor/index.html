@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram-Style Camera Filters</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="camera-container">
+            <video id="video" autoplay playsinline></video>
+            <canvas id="displayCanvas"></canvas>
+            <canvas id="canvas"></canvas>
+            <div class="overlay">
+                <div class="controls">
+                    <button id="startBtn" class="btn btn-primary">Start Camera</button>
+                    <button id="stopBtn" class="btn btn-secondary" disabled>Stop Camera</button>
+                    <button id="captureBtn" class="btn btn-capture" disabled>
+                        <span class="icon">📷</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="filters-panel">
+            <h2>Filters</h2>
+            <div class="filters-grid" id="filtersGrid">
+                <div class="filter-item" data-filter="none">
+                    <div class="filter-preview original"></div>
+                    <span class="filter-name">Original</span>
+                </div>
+                <div class="filter-item" data-filter="clarendon">
+                    <div class="filter-preview clarendon"></div>
+                    <span class="filter-name">Clarendon</span>
+                </div>
+                <div class="filter-item" data-filter="gingham">
+                    <div class="filter-preview gingham"></div>
+                    <span class="filter-name">Gingham</span>
+                </div>
+                <div class="filter-item" data-filter="moon">
+                    <div class="filter-preview moon"></div>
+                    <span class="filter-name">Moon</span>
+                </div>
+                <div class="filter-item" data-filter="lark">
+                    <div class="filter-preview lark"></div>
+                    <span class="filter-name">Lark</span>
+                </div>
+                <div class="filter-item" data-filter="reyes">
+                    <div class="filter-preview reyes"></div>
+                    <span class="filter-name">Reyes</span>
+                </div>
+                <div class="filter-item" data-filter="juno">
+                    <div class="filter-preview juno"></div>
+                    <span class="filter-name">Juno</span>
+                </div>
+                <div class="filter-item" data-filter="slumber">
+                    <div class="filter-preview slumber"></div>
+                    <span class="filter-name">Slumber</span>
+                </div>
+                <div class="filter-item" data-filter="crema">
+                    <div class="filter-preview crema"></div>
+                    <span class="filter-name">Crema</span>
+                </div>
+                <div class="filter-item" data-filter="ludwig">
+                    <div class="filter-preview ludwig"></div>
+                    <span class="filter-name">Ludwig</span>
+                </div>
+                <div class="filter-item" data-filter="aden">
+                    <div class="filter-preview aden"></div>
+                    <span class="filter-name">Aden</span>
+                </div>
+                <div class="filter-item" data-filter="perpetua">
+                    <div class="filter-preview perpetua"></div>
+                    <span class="filter-name">Perpetua</span>
+                </div>
+                <div class="filter-item" data-filter="pixelate">
+                    <div class="filter-preview pixelate"></div>
+                    <span class="filter-name">Pixelate</span>
+                </div>
+                <div class="filter-item" data-filter="halftone">
+                    <div class="filter-preview halftone"></div>
+                    <span class="filter-name">Halftone</span>
+                </div>
+            </div>
+            <div class="pixelate-control" id="pixelateControl" style="display: none;">
+                <label for="pixelSize">Pixel Size: <span id="pixelSizeValue">10</span></label>
+                <input type="range" id="pixelSize" min="2" max="50" value="10" step="1">
+            </div>
+            <div class="halftone-control" id="halftoneControl" style="display: none;">
+                <label for="halftoneSize">Dot Spacing: <span id="halftoneSizeValue">8</span></label>
+                <input type="range" id="halftoneSize" min="4" max="20" value="8" step="1">
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
