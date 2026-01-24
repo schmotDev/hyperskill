@@ -1,6 +1,6 @@
 ##  AI-Powered Camera Effects with Junie
 
-This project was built with the AI assistant JetBrain Junie as a plugin to the JEtbrain WebStorm IDE.
+This project was built with the AI assistant JetBrain Junie as a plugin to the Jetbrain WebStorm IDE.
 
 
 ### Summary
